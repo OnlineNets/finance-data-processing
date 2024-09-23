@@ -7,9 +7,10 @@ class CryptoPriceSerializer(serializers.ModelSerializer):
         model = CryptoPrice
         fields = ('rowId',
                   'crypto_name',
-                  'open_price',
-                  'close_price',
-                  'high_price',
-                  'low_price',
+                  'open',
+                  'close',
+                  'high',
+                  'low',
                   'volume',
-                  'time')
+                  'time',
+                  'timestamp')

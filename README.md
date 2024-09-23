@@ -42,6 +42,8 @@ Make sure you have python and Node js installed on your system:
   ```sh
    cd backend
    pip install -r requirements.txt
+   python -m pip install -U channels["daphne"]
+   pip install redis channels_redis
     ```
 - Start Django server
   ```sh

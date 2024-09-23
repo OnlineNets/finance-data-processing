@@ -7,7 +7,6 @@ from rest_framework.response import Response
 
 
 class CryptoPriceView(APIView):
-
     def get_cryptoprice(self, pk):
         try:
             cryptoprice = CryptoPrice.objects.get(rowId=pk)
@@ -15,14 +14,14 @@ class CryptoPriceView(APIView):
         except:
             return JsonResponse("CryptoPrice Does Not Exist", safe=False)
 
-    # def get(self, request, pk=None):
-    #     if pk:
-    #         data = self.get_student(pk)
-    #         serializer = CryptoPriceSerializer(data)
-    #     else:
-    #         data = CryptoPrice.objects.all()
-    #         serializer = CryptoPriceSerializer(data, many=True)
-    #     return Response(serializer.data)
+    def get(self, request, pk=None):
+        if pk:
+            data = self.get_cryptoprice(pk)
+            serializer = CryptoPriceSerializer(data)
+        else:
+            data = CryptoPrice.objects.all()
+            serializer = CryptoPriceSerializer(data, many=True)
+        return Response(serializer.data)
 
     # def post(self, request):
     #     data = request.data

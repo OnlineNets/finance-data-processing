@@ -44,6 +44,7 @@ def on_message(ws, message):
         low = float(candle["l"])
         volume = float(candle["v"])
         interval = candle["i"]
+        timestamp = int(candle["E"])
 
         pprint(f"Closed: {closed}")
         pprint(f"Open: {open}")
@@ -51,16 +52,17 @@ def on_message(ws, message):
         pprint(f"Low: {low}")
         pprint(f"Volume: {volume}")
         pprint(f"Interval: {interval}")
-        pprint(f"Is candle closed: {is_candle_closed}")
+        pprint(f"Is candle closed: {timestamp}")
 
         # Save to Django model
         crypto = CryptoPrice(
             crypto_name=symbol,
-            open_price=open,
-            close_price=closed,
-            high_price=high,
-            low_price=low,
+            open=open,
+            close=closed,
+            high=high,
+            low=low,
             volume=volume,
+            timestamp=timestamp
             time=datetime.utcnow(),
         )
         crypto.save()

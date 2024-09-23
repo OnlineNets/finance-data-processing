@@ -24,7 +24,7 @@ const Navigation = () => {
               className="d-inline-block align-center"
               alt="React Bootstrap logo"
             />{' '}
-            Student Management System
+            Real-Time Data Processing
         </Navbar.Brand>
     </Navbar>
     <div className='sidebar'>
@@ -37,11 +37,8 @@ const Navigation = () => {
             <NavLink exact to="/" activeClassName="activeClicked">
               <CDBSidebarMenuItem icon="home">Home</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/students" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="list">Students List</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink exact to="/manage" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="user">Manage Students</CDBSidebarMenuItem>
+            <NavLink exact to="/kline-chart" activeClassName="activeClicked">
+              <CDBSidebarMenuItem icon="list">KLine Date Chart</CDBSidebarMenuItem>
             </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>
