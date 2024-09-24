@@ -12,5 +12,5 @@ class CryptoPriceSerializer(serializers.ModelSerializer):
                   'high',
                   'low',
                   'volume',
-                  'time',
+                  'period',
                   'timestamp')

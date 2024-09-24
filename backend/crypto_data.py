@@ -63,7 +63,7 @@ def on_message(ws, message):
             low=low,
             volume=volume,
             timestamp=timestamp,
-            time=datetime.utcnow(),
+            period=datetime.fromtimestamp(timestamp),
         )
         crypto.save()
 
@@ -73,6 +73,8 @@ def on_message(ws, message):
             rsi = talib.RSI(np_closes, RSI_PERIOD)
             pprint("all rsis calculated so far")
             last_rsi = rsi[-1]
+            macd, signal, hist = talib.MACD(np_closes, fastperiod=12, slowperiod=26, signalperiod=9)
+            last_macd = macd[-1]
 
 # Create WebSocket app
 ws = wb.WebSocketApp(BINANCE_SOCKET, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)

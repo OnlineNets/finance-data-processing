@@ -35,13 +35,12 @@ const KlineChart = () => {
   socket.onmessage = (event) => {
       let latestId = 0;
       const data = JSON.parse(event.data);
-      const now = new Date();
-      console.log(datas);
+      const period = new Date(data.data.timestamp);
       setDatas(prevPrices => [
         ...prevPrices, 
         {
           ...data.data,
-          time: now.toUTCString(),
+          period,
         }
       ]); // Update the state with new data
   };

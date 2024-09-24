@@ -33,6 +33,6 @@ def instance_to_dict(instance):
         "low": instance.low_price,
         "volume": instance.volume,
         "timestamp": instance.timestamp,
-        #"time": datetime.utcnow(),
+        #"period": datetime.utcnow(),
         # Add other fields as necessary
     }

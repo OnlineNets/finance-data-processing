@@ -11,6 +11,6 @@ class CryptoPrice(models.Model):
     high = models.FloatField()
     low = models.FloatField()
     volume = models.FloatField()
-    time = models.DateTimeField()
+    period = models.DateTimeField()
     timestamp = models.BigIntegerField()
 
