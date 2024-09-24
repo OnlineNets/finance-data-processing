@@ -48,3 +48,27 @@ body, html {
    outline: none;
    border: none;
  }
+
+
+ .radio-btn-container {
+   display: flex;
+ }
+ 
+ .radio-btn {
+   margin: 10px;
+   padding: 10px;
+   border-radius: 15px;
+   background: limegreen;
+ }
+ .radio-btn:hover {
+   margin: 11px;
+   padding: 10px;
+   border-radius: 15px;
+   background: rgb(109, 175, 11);
+ }
+ 
+
+ .form-select {
+   width: 200px!important;
+   margin-left: 20px;
+ }

@@ -80,7 +80,7 @@ def on_message(ws, message):
             low=low,
             volume=volume,
             timestamp=timestamp,
-            period=datetime.fromtimestamp(timestamp),
+            period=datetime.fromtimestamp(timestamp/1000),
             rsi=last_rsi,
             macd=last_macd,
         )

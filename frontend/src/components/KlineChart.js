@@ -3,8 +3,19 @@ import "../App.css";
 import axios from 'axios';
 import { init, registerIndicator } from 'klinecharts'
 
+const url = "http://127.0.0.1:8000/cryptoprices/";
 async function getDatas() {
-  return await axios.get('http://127.0.0.1:8000/cryptoprices/')
+  return await axios.get(url)
+    .then(response => response.data)
+}
+
+async function getDatas_5m() {
+  return await axios.get(url, { params: { interval: 5 } })
+    .then(response => response.data)
+}
+
+async function getDatas_60m() {
+  return await axios.get(url, { params: { interval: 60 } })
     .then(response => response.data)
 }
 
@@ -42,6 +53,24 @@ registerIndicator({
 
 const KlineChart = () => {
   const [datas, setDatas] = useState([]);
+  const [inteval, setInterval] = React.useState("1m");
+  const onChange = async (event) => {
+    const value = event.target.value;
+    setInterval(value);
+    let datas;
+    if(value == "1m") {
+      datas = await getDatas();
+      setDatas(datas);
+    } else {
+      if(value == "5m") {
+        datas = await getDatas_5m();
+        setDatas(datas);
+      } else {
+        datas = await getDatas_60m();
+        setDatas(datas);
+      }
+    }
+  };
 
   useEffect(() => {
     let mounted = true;
@@ -109,8 +138,18 @@ const KlineChart = () => {
 
   return(
     <div className="container-fluid side-container">
-      <div id="container" className="row side-row">
-        <div id="k-line-chart" style={{ height: '630px' }}></div>
+      <div className="row side-row">
+        <select onChange={onChange} className="form-select row">
+          <option defaultValue disabled>
+            Select Interval
+          </option>
+          <option defaultValue value="1m">1m</option>
+          <option value="5m">5m</option>
+          <option value="60m">60m</option>
+        </select>
+        <div id="container" className="row side-row">
+          <div id="k-line-chart" style={{ height: '630px' }}></div>
+        </div>
       </div>
     </div>
   );
