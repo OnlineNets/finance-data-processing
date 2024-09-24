@@ -1,5 +1,4 @@
-# smwa-project
-_A simple student management web application with CRUD operations developed in Django and React Js_
+# finance data processing project
 
 ## Requirements
 Make sure you have python and Node js installed on your system:

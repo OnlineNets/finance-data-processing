@@ -30,8 +30,10 @@ def instance_to_dict(instance):
         "open": instance.open,
         "close": instance.close,
         "high": instance.high,
-        "low": instance.low_price,
+        "low": instance.low,
         "volume": instance.volume,
+        "rsi": instance.rsi,
+        "macd": instance.macd,
         "timestamp": instance.timestamp,
         #"period": datetime.utcnow(),
         # Add other fields as necessary

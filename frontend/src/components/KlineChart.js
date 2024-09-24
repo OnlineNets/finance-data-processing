@@ -1,12 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import "../App.css";
 import axios from 'axios';
-import Chart from './Chart';
+import { init, registerIndicator } from 'klinecharts'
 
-async function getStudents() {
+async function getDatas() {
   return await axios.get('http://127.0.0.1:8000/cryptoprices/')
     .then(response => response.data)
 }
+
+const fruits = [
+  '🍏', '🍎', '🍐', '🍊', '🍋', '🍌',
+  '🍉', '🍇', '🍓', '🍈', '🍒', '🍑',
+  '🍍', '🥥', '🥝', '🥭', '🥑', '🍏'
+];
+
+registerIndicator({
+  name: 'Custom',
+  figures: [{ key: 'emoji' }],
+  calc: (kLineDataList) => {
+    return kLineDataList.map(kLineData => ({
+      emoji: kLineData.close,
+      text: fruits[Math.floor(Math.random() * fruits.length)]
+    }));
+  },
+  draw: ({ ctx, barSpace, visibleRange, indicator, xAxis, yAxis }) => {
+    const { from, to } = visibleRange;
+
+    ctx.font = `${barSpace.gapBar}px Helvetica Neue`;
+    ctx.textAlign = 'center';
+    const result = indicator.result;
+    for (let i = from; i < to; i++) {
+      const data = result[i];
+      const x = xAxis.convertToPixel(i);
+      const y = yAxis.convertToPixel(data.emoji);
+      ctx.fillText(data.text, x, y);
+    }
+    return false;
+  }
+});
+
 
 const KlineChart = () => {
   const [datas, setDatas] = useState([]);
@@ -14,7 +46,7 @@ const KlineChart = () => {
   useEffect(() => {
     let mounted = true;
     let len;
-    getStudents()
+    getDatas()
       .then(data => {
         if(mounted) {
           setDatas(data)
@@ -23,6 +55,27 @@ const KlineChart = () => {
     return () => mounted = false;
   }, []);
  
+  useEffect(() => {
+    const chart = init('k-line-chart');
+    chart.createIndicator('MACD');
+    chart.createIndicator('RSI');
+    chart.applyNewData(datas);
+
+    return () => {
+      chart.destroy();
+    };
+  }, [datas]);
+
+  const setMainIndicator = (name) => {
+    const chart = init('k-line-chart'); // Re-initialize to get the chart instance
+    chart.createIndicator(name, true, { id: 'candle_pane' });
+  };
+
+  const setSubIndicator = (name) => {
+    const chart = init('k-line-chart'); // Re-initialize to get the chart instance
+    chart.createIndicator(name);
+  };
+
   const socket = new WebSocket('ws://127.0.0.1:8000/crypto/');
 
   // Handle connection open
@@ -33,9 +86,8 @@ const KlineChart = () => {
 
   // Handle incoming messages
   socket.onmessage = (event) => {
-      let latestId = 0;
       const data = JSON.parse(event.data);
-      const period = new Date(data.data.timestamp);
+      const period = new Date(data.data.timestamp/1000);
       setDatas(prevPrices => [
         ...prevPrices, 
         {
@@ -56,11 +108,11 @@ const KlineChart = () => {
   };
 
   return(
-   <div className="container-fluid side-container">
-    <Chart
-      chartValues = {datas}
-    />
-  </div>
+    <div className="container-fluid side-container">
+      <div id="container" className="row side-row">
+        <div id="k-line-chart" style={{ height: '630px' }}></div>
+      </div>
+    </div>
   );
 };
 

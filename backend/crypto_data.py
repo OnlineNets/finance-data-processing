@@ -1,5 +1,6 @@
 import os
-import json, talib, numpy
+import json
+#import numpy, talib
 import websocket as wb
 from pprint import pprint
 from datetime import datetime
@@ -18,6 +19,9 @@ RSI_OVERBOUGHT = 70
 RSI_OVERSOLD = 30
 TRADE_SYMBOL = "ETHUSD"
 TRADE_SIZE = 0.05
+FASTPERIOD=12
+SLOWPERIOD=26
+SIGNALPERIOD=9
 closed_prices = []
 in_position = False
 
@@ -54,6 +58,19 @@ def on_message(ws, message):
         pprint(f"Interval: {interval}")
         pprint(f"Is candle closed: {timestamp}")
 
+        last_rsi = 50
+        last_macd = 0
+        # closes.append(closed)
+        # if len(closes) > RSI_PERIOD:
+        #     np_closes = numpy.array(closes)
+        #     rsi = talib.RSI(np_closes, RSI_PERIOD)
+        #     pprint("all rsis calculated so far")
+        #     last_rsi = rsi[-1]
+        #     if len(closed_prices) >= SLOWPERIOD:
+        #           macd, signal, hist = talib.MACD(np_closes, fastperiod=FASTPERIOD, slowperiod=SLOWPERIOD, signalperiod=SIGNALPERIOD)
+        #           last_macd = macd[-1]
+
+
         # Save to Django model
         crypto = CryptoPrice(
             crypto_name=symbol,
@@ -64,17 +81,10 @@ def on_message(ws, message):
             volume=volume,
             timestamp=timestamp,
             period=datetime.fromtimestamp(timestamp),
+            rsi=last_rsi,
+            macd=last_macd,
         )
         crypto.save()
-
-        closes.append(closed)
-        if len(closes) > RSI_PERIOD:
-            np_closes = numpy.array(closes)
-            rsi = talib.RSI(np_closes, RSI_PERIOD)
-            pprint("all rsis calculated so far")
-            last_rsi = rsi[-1]
-            macd, signal, hist = talib.MACD(np_closes, fastperiod=12, slowperiod=26, signalperiod=9)
-            last_macd = macd[-1]
 
 # Create WebSocket app
 ws = wb.WebSocketApp(BINANCE_SOCKET, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)

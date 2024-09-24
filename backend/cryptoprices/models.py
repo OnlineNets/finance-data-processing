@@ -13,4 +13,6 @@ class CryptoPrice(models.Model):
     volume = models.FloatField()
     period = models.DateTimeField()
     timestamp = models.BigIntegerField()
+    rsi = models.FloatField()
+    macd = models.FloatField()
 

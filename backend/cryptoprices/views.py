@@ -23,28 +23,7 @@ class CryptoPriceView(APIView):
             serializer = CryptoPriceSerializer(data, many=True)
         return Response(serializer.data)
 
-    # def post(self, request):
-    #     data = request.data
-    #     serializer = CryptoPriceSerializer(data=data)
-
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return JsonResponse("Student Created Successfully", safe=False)
-    #     return JsonResponse("Failed to Add Student", safe=False)
-
-    # def put(self, request, pk=None):
-    #     student_to_update = CryptoPrice.objects.get(rowId=pk)
-    #     serializer = CryptoPriceSerializer(instance=student_to_update, data=request.data, partial=True)
-
-    #     if serializer.is_valid():
-    #         serializer.save()
-    #         return JsonResponse("Student Updated Successfully", safe=False)
-    #     return JsonResponse("Failed to Update Student")
-
-    # def delete(self, request, pk=None):
-    #     student_to_delete = CryptoPrice.objects.get(rowId=pk)
-    #     student_to_delete.delete()
-    #     return JsonResponse("Student Deleted Successfully", safe=False)
+    
 
 
 
