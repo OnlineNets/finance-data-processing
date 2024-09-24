@@ -1,5 +1,5 @@
 import os
-import json
+import json, talib, numpy
 import websocket as wb
 from pprint import pprint
 from datetime import datetime
@@ -12,7 +12,7 @@ django.setup()
 
 from cryptoprices.models import CryptoPrice
 
-BINANCE_SOCKET = "wss://stream.binance.com:9443/stream?streams=ethusdt@kline_3m/btcusdt@kline_3m"
+BINANCE_SOCKET = "wss://stream.binance.com:9443/stream?streams=ethusdt@kline_1m"
 RSI_PERIOD = 14
 RSI_OVERBOUGHT = 70
 RSI_OVERSOLD = 30
@@ -44,7 +44,7 @@ def on_message(ws, message):
         low = float(candle["l"])
         volume = float(candle["v"])
         interval = candle["i"]
-        timestamp = int(candle["E"])
+        timestamp = int(candle["t"])
 
         pprint(f"Closed: {closed}")
         pprint(f"Open: {open}")
@@ -62,10 +62,17 @@ def on_message(ws, message):
             high=high,
             low=low,
             volume=volume,
-            timestamp=timestamp
+            timestamp=timestamp,
             time=datetime.utcnow(),
         )
         crypto.save()
+
+        closes.append(closed)
+        if len(closes) > RSI_PERIOD:
+            np_closes = numpy.array(closes)
+            rsi = talib.RSI(np_closes, RSI_PERIOD)
+            pprint("all rsis calculated so far")
+            last_rsi = rsi[-1]
 
 # Create WebSocket app
 ws = wb.WebSocketApp(BINANCE_SOCKET, on_open=on_open, on_close=on_close, on_error=on_error, on_message=on_message)

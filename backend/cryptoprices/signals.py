@@ -1,6 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from .models import CryptoPrice  # Replace with your actual model
+from .models import CryptoPrice  
 from .consumers import PresenceConsumer
 import json
 from pprint import pprint

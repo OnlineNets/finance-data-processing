@@ -45,11 +45,15 @@ Make sure you have python and Node js installed on your system:
    python -m pip install -U channels["daphne"]
    pip install redis channels_redis
     ```
-- Start Django server
-  ```sh
-   python manage.py runserver
-    ```
-- Django backend server will start on http://localhost:8000/
+  - Start Django server
+    ```sh
+    python manage.py runserver
+      ```
+  - Django backend server will start on http://localhost:8000/
+  - Start Websocket
+    ```sh
+    python crypto_data.py
+      ```
 
 ## Setup Frontend
 - Open a new terminal and navigate to frontend directory
